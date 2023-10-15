@@ -10,18 +10,13 @@ class RoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: Container(
-            // height: 50,
-            // width: 200,
-            // color: Colors.blue,
-            child: ElevatedButton(
-              onPressed: trigger,
-              child: Text(innerText),
-            ),
+          child: ElevatedButton(
+            onPressed: trigger,
+            child: Text(innerText),
           ),
         ),
       ],

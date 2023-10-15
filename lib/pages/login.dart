@@ -1,5 +1,7 @@
 import 'package:chefcito/core/constants/image_assets.dart';
+import 'package:chefcito/resources/generic_form_field.dart';
 import 'package:chefcito/resources/password_formfield.dart';
+import 'package:chefcito/resources/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -26,11 +28,10 @@ class LoginPage extends StatelessWidget {
           Form(
               child: Column(
             children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  hintText: 'Email',
-                  labelText: 'Email',
-                ),
+              const SizedBox  (height: 20),
+              GenericFormField(
+                hintText: 'Email',
+                labelText: 'Email',
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter your email';
@@ -40,8 +41,27 @@ class LoginPage extends StatelessWidget {
                   }
                   return null;
                 },
+                obscureText: false,
+                suffixIcon: null,
               ),
+              // TextFormField(
+              //   decoration: const InputDecoration(
+              //     hintText: 'Email',
+              //     labelText: 'Email',
+              //   ),
+              //   validator: (value) {
+              //     if (value!.isEmpty) {
+              //       return 'Please enter your email';
+              //     }
+              //     if (!isValidEmail(value)) {
+              //       return 'Please enter a valid email';
+              //     }
+              //     return null;
+              //   },
+              // ),
               const PasswordFormField(),
+              const SizedBox(height: 20),
+              RoundedButton(innerText: "Login", trigger: () {})
             ],
           ))
         ]),
