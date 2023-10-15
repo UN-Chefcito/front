@@ -1,4 +1,4 @@
-# chefcito
+# Chefcito Frontend
 
 A new Flutter project.
 
