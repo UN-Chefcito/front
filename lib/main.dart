@@ -1,8 +1,11 @@
+import 'package:chefcito/app/app.locator.dart';
+import 'package:chefcito/app/app.router.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'ui/views/login/login.dart';
+import 'ui/views/login/login_view.dart';
 
 void main() {
+  setupLocator();
   runApp(const Chefcito());
 }
 
@@ -20,7 +23,8 @@ class Chefcito extends StatelessWidget {
         useMaterial3: true,
       ),
       navigatorKey: StackedService.navigatorKey,
-      home: LoginPage(),
+      onGenerateRoute: StackedRouter().onGenerateRoute,
+      home: const LoginPage(),
     );
   }
 }
