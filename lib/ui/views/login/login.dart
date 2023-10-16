@@ -1,7 +1,7 @@
 import 'package:chefcito/core/constants/image_assets.dart';
-import 'package:chefcito/resources/generic_form_field.dart';
-import 'package:chefcito/resources/password_formfield.dart';
-import 'package:chefcito/resources/rounded_button.dart';
+import 'package:chefcito/ui/resources/generic_form_field.dart';
+import 'package:chefcito/ui/resources/password_formfield.dart';
+import 'package:chefcito/ui/resources/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
