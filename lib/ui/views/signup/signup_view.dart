@@ -29,6 +29,7 @@ class _SignupViewState extends State<SignupView>
   Widget build(BuildContext context)
   {
     final screenSize = MediaQuery.of(context).size;
+    SnackBar snackBar;
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => SignupViewModel(),
       builder: (context, SignupViewModel model, child) => SafeArea(
@@ -101,6 +102,7 @@ class _SignupViewState extends State<SignupView>
                           labelText: "Contraseña",
                           hintText: "Contraseña",
                           obscureText: !_passwordVisible,
+                          onChanged: model.changePassword,
                           suffixIcon: IconButton(
                             icon: Icon(
                               _passwordVisible
@@ -121,6 +123,7 @@ class _SignupViewState extends State<SignupView>
                           labelText: "Confirmar contraseña",
                           hintText: "Confirmar contraseña",
                           obscureText: !_confirmPasswordVisible,
+                          onChanged: model.changeConfirmPassword,
                           suffixIcon: IconButton(
                             icon: Icon(
                               _confirmPasswordVisible
@@ -140,9 +143,27 @@ class _SignupViewState extends State<SignupView>
                           padding: const EdgeInsets.only(top: 40),
                           child: RoundedButton(
                             text: "Registrate",
-                            onPressed: () {},
                             textColor: colors.white,
                             buttonColor: colors.background,
+                            onPressed: () async {
+                              Set<Object> response = await model.signup();
+
+                              if(response.contains(201))
+                              {
+                                snackBar = SnackBar(
+                                  content: Text(response.elementAt(2).toString()),
+                                  backgroundColor: colors.background,
+                                );
+                              } else {
+                                snackBar = SnackBar(
+                                  content: Text(response.elementAt(2).toString()),
+                                  backgroundColor: colors.warning,
+                                );
+                              }
+
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            },
                           ),
                         )
                       ],
