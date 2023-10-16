@@ -12,28 +12,41 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      obscureText: _obscureText,
-      decoration: InputDecoration(
-        hintText: 'Password',
-        labelText: 'Password',
-        suffixIcon: IconButton(
-          icon: Icon(
-            _obscureText ? Icons.visibility : Icons.visibility_off,
+    return Column(
+      children: [
+        const SizedBox(
+          height: 20,
+        ),
+        TextFormField(
+          obscureText: _obscureText,
+          decoration: InputDecoration(
+            hintText: 'Password',
+            labelText: 'Password',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              gapPadding: 10,
+            ),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscureText ? Icons.visibility : Icons.visibility_off,
+              ),
+              onPressed: () {
+                setState(() {
+                  _obscureText = !_obscureText;
+                });
+              },
+            ),
           ),
-          onPressed: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Please enter your password';
+            }
+            return null;
           },
         ),
-      ),
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your password';
-        }
-        return null;
-      },
+      ],
     );
   }
 }

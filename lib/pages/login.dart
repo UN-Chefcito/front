@@ -21,14 +21,37 @@ class LoginPage extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(children: [
-          const SizedBox(height: 100),
-          Image(
-              image: const AssetImage(ImageAssets.chefcitoLogo),
-              width: (maxWidth - 800)),
+          const SizedBox(height: 150),
+          const Text(
+            'Chefcito',
+            style: TextStyle(
+              fontFamily: 'Montserrat',
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(
+                color: Colors.black38,
+                width: 2,
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image(
+                image: const AssetImage(ImageAssets.chefcitoLogo),
+                width: (maxWidth - 930),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
           Form(
               child: Column(
             children: [
-              const SizedBox  (height: 20),
+              const SizedBox(height: 20),
               GenericFormField(
                 hintText: 'Email',
                 labelText: 'Email',
@@ -60,10 +83,17 @@ class LoginPage extends StatelessWidget {
               //   },
               // ),
               const PasswordFormField(),
-              const SizedBox(height: 20),
-              RoundedButton(innerText: "Login", trigger: () {})
+              const SizedBox(height: 50),
+              RoundedButton(innerText: "Login", trigger: () {}),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: FilledButton(
+                  onPressed: () {},
+                  child: const Text("Signup"),
+                ),
+              )
             ],
-          ))
+          )),
         ]),
       ),
     );
