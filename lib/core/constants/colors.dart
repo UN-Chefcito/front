@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+const Color background = Color(0xFF254158);
 const Color primary = Color(0xFF59738C);
 const Color white = Color(0xFFFFFFFF);
 const Color black = Color(0xFF000000);
