@@ -2,15 +2,13 @@ import 'package:chefcito/core/constants/image_assets.dart';
 import 'package:chefcito/resources/generic_form_field.dart';
 import 'package:chefcito/resources/password_formfield.dart';
 import 'package:chefcito/resources/rounded_button.dart';
+import 'package:chefcito/validators/email_validator.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
   static const String routeName = '/login';
-  bool isValidEmail(String email) {
-    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
-  }
 
   final double maxWidth =
       WidgetsBinding.instance.platformDispatcher.views.first.physicalSize.width;
@@ -18,10 +16,11 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        // padding: const EdgeInsets.all(20
         child: Column(children: [
-          const SizedBox(height: 150),
+          const SizedBox(height: 20),
           const Text(
             'Chefcito',
             style: TextStyle(
@@ -31,11 +30,12 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
+          
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(22),
               border: Border.all(
-                color: Colors.black38,
+                // color: Colors.black38,
                 width: 2,
               ),
             ),
