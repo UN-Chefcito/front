@@ -1,6 +1,6 @@
 class Texts {
   static const keepSessionCheckbox = "Keep me logged in";
-  static const email = "Email";
+  static const email = "Correo Electronico";
   static const password = "Password";
   static const login = "Login";
   static const dontHaveAnAccount = "Don't have an account?";
@@ -8,16 +8,22 @@ class Texts {
   static const welcomeBack = "Welcome back to Chefcito";
   static const enterLoginDetails = "Please enter your login details";
   static const forgotPassword = "Forgot your password?";
+  static const alreadyHaveAnAccount = "Already have an account?";
 }
 
 class HintTexts {
   static const email = "chefchito@example.com";
   static const password = "Password";
+  static const confirmPassword = "Confirm Password";
+  static const name = "Name";
 }
 
 class Labels {
+  static const name = "Name";
   static const email = "Email";
   static const password = "Password";
+  static const login = "Login";
+  static const confirmPassword = "Confirm Password";
 }
 
 class ErrorTexts {

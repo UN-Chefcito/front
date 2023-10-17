@@ -4,9 +4,7 @@ import 'package:chefcito/app/app.locator.dart';
 import 'package:chefcito/app/app.router.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class SignupViewModel extends BaseViewModel 
-{
-
+class SignupViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final AuthService _authService = locator<AuthService>();
 
@@ -18,7 +16,6 @@ class SignupViewModel extends BaseViewModel
   bool responseError = false;
   int responseStatus = 0;
   String responseMessage = '';
-
 
   changeName(String value) {
     name = value;
@@ -41,21 +38,19 @@ class SignupViewModel extends BaseViewModel
   }
 
   void navigateToLogin() {
-    _navigationService.navigateTo(Routes.loginPage);
+    // Return to the login page;
+    _navigationService.back();
   }
 
-
-  Future<Set<Object>> signup() async
-  {
-    final response = await _authService.signup(name: name, email: email, password: password);
+  Future<Set<Object>> signup() async {
+    final response =
+        await _authService.signup(name: name, email: email, password: password);
 
     print({name, email, password});
     print(response.statusCode);
     print(response.body);
 
-
-    switch (response.statusCode)
-    {
+    switch (response.statusCode) {
       case 201:
         responseError = false;
         responseStatus = response.statusCode;
@@ -63,16 +58,18 @@ class SignupViewModel extends BaseViewModel
 
         _navigationService.clearStackAndShow(Routes.loginPage);
         break;
-      
+
       case 400:
         responseError = true;
         responseStatus = response.statusCode;
 
         emailAlreadyExists(response);
 
-        responseMessage = emailAlreadyExists(response) ? 'El correo electrónico ya existe' : 'Revisa los campos';
+        responseMessage = emailAlreadyExists(response)
+            ? 'El correo electrónico ya existe'
+            : 'Revisa los campos';
         break;
-      
+
       default:
         responseError = true;
         responseStatus = response.statusCode;
@@ -80,14 +77,10 @@ class SignupViewModel extends BaseViewModel
         break;
     }
 
-
     return {responseError, responseStatus, responseMessage};
   }
 
-
-  bool emailAlreadyExists(response)
-  {
+  bool emailAlreadyExists(response) {
     return response.body.contains('Email already exists');
   }
-
 }

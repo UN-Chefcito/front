@@ -1,8 +1,11 @@
 import 'package:chefcito/core/constants/image_assets.dart';
+import 'package:chefcito/core/constants/strings.dart';
 import 'package:chefcito/ui/resources/account_question.dart';
 import 'package:chefcito/ui/resources/generic_form_field.dart';
 import 'package:chefcito/ui/resources/rounded_button.dart';
 import 'package:chefcito/ui/views/login/login_viewmodel.dart';
+import 'package:chefcito/validators/email_validator.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chefcito/core/constants/colors.dart' as colors;
@@ -17,7 +20,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   static const String routeName = '/login';
 
   bool isValidEmail(String email) {
@@ -63,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Iniciar Sesión",
+                          Texts.login,
                           textAlign: TextAlign.left,
                           style: TextStyle(
                               color: colors.background,
@@ -81,40 +83,18 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 20),
                         GenericFormField(
                           paddingTop: 32,
-                          hintText: 'Correo electrónico',
-                          labelText: 'Correo electrónico',
+                          hintText: HintTexts.email,
+                          labelText: Labels.email,
                           keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            if (!isValidEmail(value)) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
+                          validator: (email) {
+                            return emailValidator(email: email);
                           },
                           obscureText: false,
-                          suffixIcon: null,
                         ),
-                        // TextFormField(
-                        //   decoration: const InputDecoration(
-                        //     hintText: 'Email',
-                        //     labelText: 'Email',
-                        //   ),
-                        //   validator: (value) {
-                        //     if (value!.isEmpty) {
-                        //       return 'Please enter your email';
-                        //     }
-                        //     if (!isValidEmail(value)) {
-                        //       return 'Please enter a valid email';
-                        //     }
-                        //     return null;
-                        //   },
-                        // ),
                         GenericFormField(
                           paddingTop: 24,
-                          labelText: "Contraseña",
-                          hintText: "Contraseña",
+                          labelText: Labels.password,
+                          hintText: Labels.password,
                           obscureText: !_passwordVisible,
                           onChanged: (value) {},
                           suffixIcon: IconButton(
@@ -138,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 40),
                     child: RoundedButton(
-                      text: "Login",
+                      text: Texts.login,
                       onPressed: () {},
                       textColor: colors.white,
                       buttonColor: colors.background,
@@ -146,8 +126,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
 
                   AccountQuestion(
-                      question: "¿Aún no tienes una cuenta?",
-                      acction: "Registrate",
+                      question: Texts.dontHaveAnAccount,
+                      acction: Texts.signUp,
                       onPressed: () {
                         model.navigateToSignup();
                       },
