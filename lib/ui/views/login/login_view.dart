@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                           paddingTop: 32,
                           hintText: HintTexts.email,
                           labelText: Labels.email,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.number,
                           validator: (email) {
                             return emailValidator(email: email);
                           },
