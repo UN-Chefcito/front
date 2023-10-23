@@ -15,7 +15,7 @@ class Texts {
   static const send = "Send";
   static const chefcito = "C.H.E.F.C.I.T.O";
   static const chatgptUser1 = "Give a recipe with ";
-  static const chatgptUser2 = " Calories no more text";
+  static const chatgptUser2 = " no more text";
 }
 
 class HintTexts {

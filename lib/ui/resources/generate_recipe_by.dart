@@ -6,12 +6,12 @@ import 'package:chefcito/core/constants/constraints.dart' as constraints;
 class GenerateRecipeBy extends StatefulWidget {
   final List<String> items;
   String? selectedItem;
-  final Function(String)? onChanged;
+  final Function(String?)? onChanged;
   GenerateRecipeBy({
     Key? key,
     required this.items,
     required this.selectedItem,
-    this.onChanged,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -35,11 +35,7 @@ class _GenerateRecipeByState extends State<GenerateRecipeBy> {
         DropdownButton<String>(
           isExpanded: true,
           value: widget.selectedItem,
-          onChanged: (String? newValue) {
-            setState(() {
-              widget.selectedItem = newValue;
-            });
-          },
+          onChanged: widget.onChanged,
           items: widget.items.map((String item) {
             return DropdownMenuItem<String>(
               value: item,

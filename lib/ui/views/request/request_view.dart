@@ -24,6 +24,9 @@ class _RequestPageState extends State<RequestPage> {
   String requestPetition = "";
   String resultPetition = Texts.calories;
   String tipeOfPetition = Labels.calories;
+  List<String> itemsList = ['Calories','Buks','Protein'];
+  int index = 0;
+
   Future<void> getRecipe() async {
     final response = await http.post(
       Uri.parse('https://api.openai.com/v1/chat/completions'),
@@ -40,10 +43,10 @@ class _RequestPageState extends State<RequestPage> {
       }),
     );
     final Map<String, dynamic> data = json.decode(response.body);
+    print( Texts.chatgptUser1+requestPetition+tipeOfPetition+Texts.chatgptUser2);
     setState(() {
       resultPetition = data['choices'][0]["message"]["content"].toString();
       sendEnabled = true;
-      print(resultPetition);
     });
     
   }
@@ -90,8 +93,14 @@ class _RequestPageState extends State<RequestPage> {
                   Padding(
                     padding: EdgeInsets.only(top: 40),
                     child: GenerateRecipeBy(
-                      items: ['Calories','Buks','Protein'],
-                      selectedItem: 'Calories', // Valor seleccionado inicial
+                      items: itemsList,
+                      selectedItem: itemsList[index], // Valor seleccionado inicial
+                      onChanged: (values){
+                        setState(() {
+                          index = itemsList.indexOf(values!);
+                          tipeOfPetition = itemsList[index];
+                        });
+                      },
                     ),
                   ),
                    
@@ -101,8 +110,8 @@ class _RequestPageState extends State<RequestPage> {
                       SizedBox(height: 20),
                       GenericFormField(
                         paddingTop: 10,
-                        hintText: HintTexts.calories,
-                        labelText: Labels.calories,
+                        hintText: tipeOfPetition,
+                        labelText: tipeOfPetition,
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           setState(() {
