@@ -5,9 +5,7 @@ import 'package:chefcito/ui/resources/generic_form_field.dart';
 import 'package:chefcito/ui/resources/rounded_button.dart';
 import 'package:chefcito/ui/views/login/login_viewmodel.dart';
 import 'package:chefcito/validators/email_validator.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
 import 'package:chefcito/core/constants/colors.dart' as colors;
 import 'package:chefcito/core/constants/constraints.dart' as constraints;
 import 'package:stacked/stacked.dart';
@@ -20,7 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  static const String routeName = '/login';
+  //static const String routeName = '/login';
 
   bool isValidEmail(String email) {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
@@ -119,7 +117,9 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.only(top: 40),
                     child: RoundedButton(
                       text: Texts.login,
-                      onPressed: () {},
+                      onPressed: () {
+                        model.navigateToHome();
+                      },
                       textColor: colors.white,
                       buttonColor: colors.background,
                     ),

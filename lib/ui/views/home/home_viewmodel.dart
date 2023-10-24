@@ -1,7 +1,9 @@
 import 'package:stacked/stacked.dart';
 
-class RequestViewModel extends BaseViewModel
+
+class HomeViewModel extends BaseViewModel
 {
   //final _navigationService = locator<NavigationService>();
+
 
 }

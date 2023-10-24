@@ -1,13 +1,9 @@
 import 'package:chefcito/app/app.locator.dart';
 import 'package:chefcito/app/app.router.dart';
-import 'package:chefcito/ui/resources/tab_bar.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'package:stacked_services/stacked_services.dart';
 import 'ui/views/login/login_view.dart';
-import 'ui/views/request/request_view.dart';
 
 void main() {
   setupLocator();
@@ -37,9 +33,8 @@ class Chefcito extends StatelessWidget {
           useMaterial3: true,
         ),
         locale: const Locale('es'),
-        //navigatorKey: StackedService.navigatorKey,
-        //onGenerateRoute: StackedRouter().onGenerateRoute,
-        home: TabBarApp() //RequestPage() //const LoginPage(),
-        );
+        navigatorKey: StackedService.navigatorKey,
+        onGenerateRoute: StackedRouter().onGenerateRoute,
+        home: const LoginPage());
   }
 }

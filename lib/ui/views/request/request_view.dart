@@ -19,7 +19,7 @@ class RequestPage extends StatefulWidget {
 }
 
 class _RequestPageState extends State<RequestPage> {
-  static const String routeName = '/request';
+  //static const String routeName = '/request';
   bool sendEnabled = true;
   String requestPetition = "";
   String resultPetition = Texts.calories;
