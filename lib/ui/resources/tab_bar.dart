@@ -1,5 +1,6 @@
 import 'package:chefcito/core/constants/image_assets.dart';
 import 'package:chefcito/core/constants/strings.dart';
+import 'package:chefcito/ui/resources/calendar.dart';
 import 'package:chefcito/ui/views/request/request_view.dart';
 import 'package:chefcito/core/constants/colors.dart' as colors;
 import 'package:chefcito/core/constants/constraints.dart' as constraints;
@@ -75,13 +76,13 @@ class TabBarExample extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: <Widget>[
             Center(
               child: RequestPage(),
             ),
             Center(
-              child: Text("To Do"),
+              child: Calendar(),
             ),
             Center(
               child: Text("To do"),

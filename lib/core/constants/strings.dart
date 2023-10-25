@@ -16,6 +16,9 @@ class Texts {
   static const chefcito = "C.H.E.F.C.I.T.O";
   static const chatgptUser1 = "Give a recipe with ";
   static const chatgptUser2 = " no more text";
+  static const foodSchedule = "Your Schedule !";
+  static const generateFoodSchedule = "Generate Schedule";
+  static const generateFoodScheduleSevenDays = "Generate Schedule For 7 Days";
 }
 
 class HintTexts {

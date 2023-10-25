@@ -24,7 +24,7 @@ class _RequestPageState extends State<RequestPage> {
   String requestPetition = "";
   String resultPetition = Texts.calories;
   String tipeOfPetition = Labels.calories;
-  List<String> itemsList = ['Calories','Buks','Protein'];
+  List<String> itemsList = ['Calories', 'Buks', 'Protein'];
   int index = 0;
 
   Future<void> getRecipe() async {
@@ -38,17 +38,25 @@ class _RequestPageState extends State<RequestPage> {
       body: jsonEncode({
         "model": "gpt-3.5-turbo",
         "messages": [
-          {"role": "user", "content": Texts.chatgptUser1+requestPetition+tipeOfPetition+Texts.chatgptUser2}
+          {
+            "role": "user",
+            "content": Texts.chatgptUser1 +
+                requestPetition +
+                tipeOfPetition +
+                Texts.chatgptUser2
+          }
         ]
       }),
     );
     final Map<String, dynamic> data = json.decode(response.body);
-    print( Texts.chatgptUser1+requestPetition+tipeOfPetition+Texts.chatgptUser2);
+    print(Texts.chatgptUser1 +
+        requestPetition +
+        tipeOfPetition +
+        Texts.chatgptUser2);
     setState(() {
       resultPetition = data['choices'][0]["message"]["content"].toString();
       sendEnabled = true;
     });
-    
   }
 
   @override
@@ -67,7 +75,6 @@ class _RequestPageState extends State<RequestPage> {
                       children: <Widget>[
                         Text(
                           Texts.generateARecipe,
-                          textAlign: TextAlign.left,
                           style: TextStyle(
                               color: colors.background,
                               fontFamily: constraints.fontFamily,
@@ -89,13 +96,13 @@ class _RequestPageState extends State<RequestPage> {
                           image: AssetImage(ImageAssets.olla),
                         )),
                   ),
-
                   Padding(
                     padding: EdgeInsets.only(top: 40),
                     child: GenerateRecipeBy(
                       items: itemsList,
-                      selectedItem: itemsList[index], // Valor seleccionado inicial
-                      onChanged: (values){
+                      selectedItem:
+                          itemsList[index], // Valor seleccionado inicial
+                      onChanged: (values) {
                         setState(() {
                           index = itemsList.indexOf(values!);
                           tipeOfPetition = itemsList[index];
@@ -103,46 +110,42 @@ class _RequestPageState extends State<RequestPage> {
                       },
                     ),
                   ),
-                   
                   Form(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20),
-                      GenericFormField(
-                        paddingTop: 10,
-                        hintText: tipeOfPetition,
-                        labelText: tipeOfPetition,
-                        keyboardType: TextInputType.number,
-                        onChanged: (value) {
-                          setState(() {
-                            requestPetition = value;
-                          });
-                        },
-                        obscureText: false,
-                        
-                      ),
-                      
-                    ],
+                    child: Column(
+                      children: [
+                        SizedBox(height: 20),
+                        GenericFormField(
+                          paddingTop: 10,
+                          hintText: tipeOfPetition,
+                          labelText: tipeOfPetition,
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) {
+                            setState(() {
+                              requestPetition = value;
+                            });
+                          },
+                          obscureText: false,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                
                   Padding(
-                    padding: const EdgeInsets.only(top: 40,bottom: 30),
+                    padding: const EdgeInsets.only(top: 40, bottom: 30),
                     child: RoundedButton(
                       text: Texts.send,
                       enabled: sendEnabled,
-                      onPressed: (
-                      ) {setState(() {
-                        sendEnabled = !sendEnabled;
-                        getRecipe();
-                      });},
+                      onPressed: () {
+                        setState(() {
+                          sendEnabled = !sendEnabled;
+                          getRecipe();
+                        });
+                      },
                       textColor: colors.white,
                       buttonColor: colors.background,
                     ),
                   ),
                   Card(
-                    child:
-                    Container(
+                    child: Container(
                       padding: EdgeInsets.all(20.0),
                       decoration: BoxDecoration(
                         border: Border.all(),
@@ -153,7 +156,6 @@ class _RequestPageState extends State<RequestPage> {
                       ),
                     ),
                   )
-
                 ]),
               ),
             ));
