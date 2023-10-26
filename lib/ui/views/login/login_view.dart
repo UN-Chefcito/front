@@ -32,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    SnackBar snackBar;
     return ViewModelBuilder.reactive(
         viewModelBuilder: () => LoginViewModel(),
         builder: (context, LoginViewModel model, child) => Scaffold(
@@ -87,6 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                           validator: (email) {
                             return emailValidator(email: email);
                           },
+                          onChanged: model.changeEmail,
                           obscureText: false,
                         ),
                         GenericFormField(
@@ -94,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: Labels.password,
                           hintText: Labels.password,
                           obscureText: !_passwordVisible,
-                          onChanged: (value) {},
+                          onChanged: model.changePassword,
                           suffixIcon: IconButton(
                             icon: Icon(
                               _passwordVisible
@@ -117,8 +119,24 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.only(top: 40),
                     child: RoundedButton(
                       text: Texts.login,
-                      onPressed: () {
-                        model.navigateToHome();
+                      onPressed: () async {
+                        Set<Object> response = await model.login();
+
+                        if (response.contains(200)) {
+                          snackBar = SnackBar(
+                            content: Text(response.elementAt(2).toString()),
+                            backgroundColor: colors.background,
+                          );
+                          model.navigateToHome();
+                        } else {
+                          snackBar = SnackBar(
+                            content: Text(response.elementAt(2).toString()),
+                            backgroundColor: colors.warning,
+                          );
+                        }
+
+                        // ignore: use_build_context_synchronously
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
                       textColor: colors.white,
                       buttonColor: colors.background,
