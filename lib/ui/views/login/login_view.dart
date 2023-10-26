@@ -5,9 +5,7 @@ import 'package:chefcito/ui/resources/generic_form_field.dart';
 import 'package:chefcito/ui/resources/rounded_button.dart';
 import 'package:chefcito/ui/views/login/login_viewmodel.dart';
 import 'package:chefcito/validators/email_validator.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
 import 'package:chefcito/core/constants/colors.dart' as colors;
 import 'package:chefcito/core/constants/constraints.dart' as constraints;
 import 'package:stacked/stacked.dart';
@@ -20,7 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  static const String routeName = '/login';
+  //static const String routeName = '/login';
 
   bool isValidEmail(String email) {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
@@ -34,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    SnackBar snackBar;
     return ViewModelBuilder.reactive(
         viewModelBuilder: () => LoginViewModel(),
         builder: (context, LoginViewModel model, child) => Scaffold(
@@ -89,6 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                           validator: (email) {
                             return emailValidator(email: email);
                           },
+                          onChanged: model.changeEmail,
                           obscureText: false,
                         ),
                         GenericFormField(
@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: Labels.password,
                           hintText: Labels.password,
                           obscureText: !_passwordVisible,
-                          onChanged: (value) {},
+                          onChanged: model.changePassword,
                           suffixIcon: IconButton(
                             icon: Icon(
                               _passwordVisible
@@ -119,7 +119,25 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.only(top: 40),
                     child: RoundedButton(
                       text: Texts.login,
-                      onPressed: () {},
+                      onPressed: () async {
+                        Set<Object> response = await model.login();
+
+                        if (response.contains(200)) {
+                          snackBar = SnackBar(
+                            content: Text(response.elementAt(2).toString()),
+                            backgroundColor: colors.background,
+                          );
+                          model.navigateToHome();
+                        } else {
+                          snackBar = SnackBar(
+                            content: Text(response.elementAt(2).toString()),
+                            backgroundColor: colors.warning,
+                          );
+                        }
+
+                        // ignore: use_build_context_synchronously
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      },
                       textColor: colors.white,
                       buttonColor: colors.background,
                     ),

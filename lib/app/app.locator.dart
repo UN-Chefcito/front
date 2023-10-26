@@ -10,6 +10,7 @@ import 'package:stacked_services/src/navigation/navigation_service.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
 import '../services/auth_service.dart';
+import '../services/request_chatGpt.dart';
 
 final locator = StackedLocator.instance;
 
@@ -24,4 +25,5 @@ Future<void> setupLocator({
 // Register dependencies
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => AuthService());
+  locator.registerLazySingleton(() => RequestChatGpt());
 }
