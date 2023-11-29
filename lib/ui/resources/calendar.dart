@@ -249,17 +249,37 @@ class _CalendarState extends State<Calendar> {
                 title: Column(children: [
                   Text(
                     event.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 23
+                    ),
                   ),
+                 const SizedBox(height: 8.0),
                 ]),
                 subtitle: Column(children: [
                   Text(
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w500
+                      
+                    ),
                     event.tag,
+
                   ),
+                  const SizedBox(height: 8.0),
                   Text(
                     event.ingredients,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500
+                    ),
                   ),
+                  const SizedBox(height: 8.0),
                   Text(
                     event.intructions,
+                     style: const TextStyle(
+                      fontWeight: FontWeight.w500
+                    ),
                   ),
                 ]),
               ),
