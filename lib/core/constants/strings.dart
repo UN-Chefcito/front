@@ -13,9 +13,12 @@ class Texts {
   static const generateARecipe = "Generate a Recipe !";
   static const generateBy = "Generate By ";
   static const send = "Send";
+  static const saveRecipe = "Save Recipe";
   static const chefcito = "C.H.E.F.C.I.T.O";
   static const chatgptUser1 = "Give a recipe with ";
   static const chatgptUser2 = " no more text";
+  static const chatgptUser3 =
+      " in the next JSON formart, all atributtes as a single String, not lists : 'title': RecipeName, 'description': RecipeDescription, 'ingredients': ingredients, 'steps': steps,'keywords': keywords";
   static const foodSchedule = "Your Schedule !";
   static const generateFoodSchedule = "Generate Schedule";
   static const generateFoodScheduleSevenDays = "Generate Schedule For 7 Days";

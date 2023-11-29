@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'ui/views/login/login_view.dart';
+import 'ui/views/home/home_view.dart';
 
 void main() {
   setupLocator();

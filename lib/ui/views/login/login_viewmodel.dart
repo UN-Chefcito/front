@@ -4,8 +4,7 @@ import 'package:chefcito/services/auth_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class LoginViewModel extends BaseViewModel
-{
+class LoginViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final AuthService _authService = locator<AuthService>();
 
@@ -16,17 +15,15 @@ class LoginViewModel extends BaseViewModel
   int responseStatus = 0;
   String responseMessage = '';
 
-  void navigateToSignup()
-  {
+  void navigateToSignup() {
     _navigationService.navigateTo(Routes.signupView);
   }
 
-    void navigateToHome()
-  {
+  void navigateToHome() {
     _navigationService.navigateTo(Routes.homePage);
   }
 
-    changeEmail(String value) {
+  changeEmail(String value) {
     email = value;
     notifyListeners();
   }
@@ -36,9 +33,8 @@ class LoginViewModel extends BaseViewModel
     notifyListeners();
   }
 
-    Future<Set<Object>> login() async {
-    final response =
-        await _authService.login(email: email, password: password);
+  Future<Set<Object>> login() async {
+    final response = await _authService.login(email: email, password: password);
 
     print({email, password});
     print(response.statusCode);
@@ -51,6 +47,13 @@ class LoginViewModel extends BaseViewModel
         responseMessage = 'Te has logeado correctamente';
 
         _navigationService.clearStackAndShow(Routes.homePage);
+        break;
+
+      case 400:
+        responseError = true;
+        responseStatus = response.statusCode;
+
+        responseMessage = 'Invalid email or password';
         break;
 
       case 401:
@@ -69,16 +72,4 @@ class LoginViewModel extends BaseViewModel
 
     return {responseError, responseStatus, responseMessage};
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-

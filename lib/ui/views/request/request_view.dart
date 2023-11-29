@@ -11,6 +11,51 @@ import 'package:chefcito/core/constants/colors.dart' as colors;
 import 'package:chefcito/core/constants/constraints.dart' as constraints;
 import 'package:stacked/stacked.dart';
 
+class Recipe {
+  String? title;
+  String? description;
+  String? ingredients;
+  String? steps;
+  String? costType;
+  double? cost;
+  String? keywords;
+
+  Recipe({
+    this.title,
+    this.description,
+    this.ingredients,
+    this.steps,
+    this.costType,
+    this.cost,
+    this.keywords,
+  });
+
+  factory Recipe.fromJson(
+      Map<String, dynamic> json, String costType, double cost) {
+    return Recipe(
+      title: json['title'],
+      description: json['description'],
+      ingredients: json['ingredients'],
+      steps: json['steps'],
+      costType: costType,
+      cost: cost,
+      keywords: json['keywords'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'ingredients': ingredients,
+      'steps': steps,
+      'cost_type': costType,
+      'cost': cost,
+      'keywords': keywords,
+    };
+  }
+}
+
 class RequestPage extends StatefulWidget {
   const RequestPage({Key? key}) : super(key: key);
 
@@ -25,6 +70,8 @@ class _RequestPageState extends State<RequestPage> {
   String resultPetition = Texts.calories;
   String tipeOfPetition = Labels.calories;
   List<String> itemsList = ['Calories', 'Buks', 'Protein'];
+  Map<String, dynamic> recipeData = new Map<String, dynamic>();
+  Recipe generatedRecipe = new Recipe();
   int index = 0;
 
   Future<void> getRecipe() async {
@@ -43,20 +90,60 @@ class _RequestPageState extends State<RequestPage> {
             "content": Texts.chatgptUser1 +
                 requestPetition +
                 tipeOfPetition +
+                Texts.chatgptUser3 +
                 Texts.chatgptUser2
           }
         ]
       }),
     );
     final Map<String, dynamic> data = json.decode(response.body);
-    print(Texts.chatgptUser1 +
-        requestPetition +
-        tipeOfPetition +
-        Texts.chatgptUser2);
+
+    //final Recipe generatedRecipe = Recipe.fromJson(data['choices'][0]["message"]["content"]);
+
     setState(() {
-      resultPetition = data['choices'][0]["message"]["content"].toString();
+      recipeData =
+          json.decode(data['choices'][0]["message"]["content"].toString());
+      generatedRecipe = Recipe.fromJson(
+          recipeData, tipeOfPetition, double.parse(requestPetition));
+      print("-----------------------------------------------------------");
+      print(generatedRecipe.title);
+      print(generatedRecipe.description);
+      print(generatedRecipe.ingredients);
+      print(generatedRecipe.steps);
+      print(generatedRecipe.costType);
+      print(generatedRecipe.cost);
+      print(generatedRecipe.keywords);
+
+      print("-----------------------------------------------------------");
+
+      resultPetition =
+          "Name : \n${generatedRecipe.title}\nDescription : \n${generatedRecipe.description}\nIngredients : \n${generatedRecipe.ingredients}\nSteps : \n${generatedRecipe.steps}\n";
       sendEnabled = true;
     });
+  }
+
+  Future<void> saveRecipe() async {
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:3000/recipes'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(generatedRecipe.toJson()),
+    );
+    if (response.statusCode == 201) {
+      print("Receta creada");
+      recipeData = new Map<String, dynamic>();
+      sendEnabled = true;
+      resultPetition = Texts.calories;
+    } else {
+      print("Problemas ");
+    }
+  }
+
+  void resetRequest() async {
+    recipeData = new Map<String, dynamic>();
+    sendEnabled = true;
+    resultPetition = Texts.calories;
   }
 
   @override
@@ -138,6 +225,59 @@ class _RequestPageState extends State<RequestPage> {
                         setState(() {
                           sendEnabled = !sendEnabled;
                           getRecipe();
+                        });
+                      },
+                      textColor: colors.white,
+                      buttonColor: colors.background,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 0, bottom: 30),
+                    child: RoundedButton(
+                      text: Texts.saveRecipe,
+                      enabled: sendEnabled,
+                      onPressed: () {
+                        setState(() {
+                          if (recipeData.isEmpty) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Please Generate a Recipe'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Cerrar la alerta
+                                      },
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            sendEnabled = !sendEnabled;
+                            saveRecipe();
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Recipe Added to DataBase !'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Cerrar la alerta
+                                      },
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            resetRequest();
+                          }
                         });
                       },
                       textColor: colors.white,
