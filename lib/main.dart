@@ -36,6 +36,6 @@ class Chefcito extends StatelessWidget {
         locale: const Locale('es'),
         navigatorKey: StackedService.navigatorKey,
         onGenerateRoute: StackedRouter().onGenerateRoute,
-        home: const LoginPage());
+        home: const HomePage());
   }
 }

@@ -96,6 +96,7 @@ class _RequestPageState extends State<RequestPage> {
         ]
       }),
     );
+
     final Map<String, dynamic> data = json.decode(response.body);
 
     //final Recipe generatedRecipe = Recipe.fromJson(data['choices'][0]["message"]["content"]);
@@ -105,16 +106,6 @@ class _RequestPageState extends State<RequestPage> {
           json.decode(data['choices'][0]["message"]["content"].toString());
       generatedRecipe = Recipe.fromJson(
           recipeData, tipeOfPetition, double.parse(requestPetition));
-      print("-----------------------------------------------------------");
-      print(generatedRecipe.title);
-      print(generatedRecipe.description);
-      print(generatedRecipe.ingredients);
-      print(generatedRecipe.steps);
-      print(generatedRecipe.costType);
-      print(generatedRecipe.cost);
-      print(generatedRecipe.keywords);
-
-      print("-----------------------------------------------------------");
 
       resultPetition =
           "Name : \n${generatedRecipe.title}\nDescription : \n${generatedRecipe.description}\nIngredients : \n${generatedRecipe.ingredients}\nSteps : \n${generatedRecipe.steps}\n";
@@ -127,6 +118,7 @@ class _RequestPageState extends State<RequestPage> {
       Uri.parse('http://10.0.2.2:3000/recipes'),
       headers: {
         'Content-Type': 'application/json',
+        
       },
       body: jsonEncode(generatedRecipe.toJson()),
     );

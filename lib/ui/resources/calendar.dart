@@ -1,9 +1,16 @@
+import 'dart:convert';
+
 import 'package:chefcito/core/constants/colors.dart' as colors;
 import 'package:chefcito/core/constants/constraints.dart' as constraints;
 import 'package:chefcito/core/constants/strings.dart';
 import 'package:chefcito/ui/resources/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:chefcito/ui/resources/generate_recipe_by.dart';
+import 'package:chefcito/ui/resources/generic_form_field.dart';
+import 'package:http/http.dart' as http;
+import 'package:chefcito/ui/views/request/request_view.dart';
+import 'dart:math';
 
 class Event {
   //Acomodarlo a la clase de receta
@@ -26,10 +33,17 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
+  String requestPetition = "";
+  String tipeOfPetition = Labels.calories;
+  List<String> itemsList = ['Calories', 'Buks', 'Protein'];
+  List<Recipe> recipeList = [];
+  int index = 0;
   Map<DateTime, List<Event>> selectedEvents = {};
   CalendarFormat format = CalendarFormat.month;
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
+  Random random = Random();
+  int randomNumber = 0;
 
   @override
   void initState() {
@@ -39,6 +53,113 @@ class _CalendarState extends State<Calendar> {
 
   List<Event> _getEventsfromDay(DateTime date) {
     return selectedEvents[date] ?? [];
+  }
+
+  Future<void> getRecipesByCost(String costType, double cost) async {
+    final Uri uri = Uri.parse(
+        'http://10.0.2.2:3000/recipes/cost?costType=$costType&cost=$cost');
+
+    try {
+      final response = await http.get(uri);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> recipesJson = json.decode(response.body);
+
+        // Mapea las recetas desde JSON a objetos Recipe
+        recipeList = recipesJson.map((json) {
+          return Recipe.fromJson(json, costType, cost);
+        }).toList();
+
+        // Haz algo con las recetas obtenidas
+        print(recipeList.length);
+        randomNumber = random.nextInt(recipeList.length);
+
+        if (selectedEvents[selectedDay] != null) {
+          selectedEvents[selectedDay]?.add(
+            Event(
+                recipeList[randomNumber].title.toString(),
+                recipeList[randomNumber].description.toString(),
+                recipeList[randomNumber].ingredients.toString(),
+                recipeList[randomNumber].steps.toString()),
+          );
+        } else {
+          selectedEvents[selectedDay] = [
+            Event(
+                recipeList[randomNumber].title.toString(),
+                recipeList[randomNumber].description.toString(),
+                recipeList[randomNumber].ingredients.toString(),
+                recipeList[randomNumber].steps.toString()),
+          ];
+        }
+      } else {
+        print(
+            'Error al obtener recetas. Código de estado: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
+
+  Future<void> getRecipesByCostWeek(String costType, double cost) async {
+    final Uri uri = Uri.parse(
+        'http://10.0.2.2:3000/recipes/cost?costType=$costType&cost=$cost');
+    List<Recipe> done = [];
+
+    try {
+      final response = await http.get(uri);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> recipesJson = json.decode(response.body);
+
+        // Mapea las recetas desde JSON a objetos Recipe
+        recipeList = recipesJson.map((json) {
+          return Recipe.fromJson(json, costType, cost);
+        }).toList();
+
+        // Haz algo con las recetas obtenidas
+        print(recipeList.length);
+
+        for (var i = 0; i < 7; i++) {
+          randomNumber = random.nextInt(recipeList.length);
+          DateTime currentDay = selectedDay.add(Duration(days: i));
+          if (selectedEvents[currentDay] != null) {
+            selectedEvents[currentDay]?.add(
+              Event(
+                  recipeList[randomNumber].title.toString(),
+                  recipeList[randomNumber].description.toString(),
+                  recipeList[randomNumber].ingredients.toString(),
+                  recipeList[randomNumber].steps.toString()),
+            );
+
+            done.add(recipeList[randomNumber]);
+            recipeList.removeAt(randomNumber);
+
+            if (recipeList.isEmpty) {
+              recipeList = done;
+            }
+          } else {
+            selectedEvents[currentDay] = [
+              Event(
+                  recipeList[randomNumber].title.toString(),
+                  recipeList[randomNumber].description.toString(),
+                  recipeList[randomNumber].ingredients.toString(),
+                  recipeList[randomNumber].steps.toString()),
+            ];
+            done.add(recipeList[randomNumber]);
+            recipeList.removeAt(randomNumber);
+
+            if (recipeList.isEmpty) {
+              recipeList = done;
+            }
+          }
+        }
+      } else {
+        print(
+            'Error al obtener recetas. Código de estado: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
   }
 
   @override
@@ -145,21 +266,63 @@ class _CalendarState extends State<Calendar> {
             ),
           ),
           Padding(
+            padding: EdgeInsets.only(top: 40),
+            child: GenerateRecipeBy(
+              items: itemsList,
+              selectedItem: itemsList[index], // Valor seleccionado inicial
+              onChanged: (values) {
+                setState(() {
+                  index = itemsList.indexOf(values!);
+                  tipeOfPetition = itemsList[index];
+                });
+              },
+            ),
+          ),
+          Form(
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                GenericFormField(
+                  paddingTop: 10,
+                  hintText: tipeOfPetition,
+                  labelText: tipeOfPetition,
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    setState(() {
+                      requestPetition = value;
+                    });
+                  },
+                  obscureText: false,
+                ),
+              ],
+            ),
+          ),
+          Padding(
             padding: const EdgeInsets.only(top: 40, bottom: 30),
             child: RoundedButton(
               text: Texts.generateFoodSchedule,
               onPressed: () {
                 setState(() {
-                  if (selectedEvents[selectedDay] != null) {
-                    selectedEvents[selectedDay]?.add(
-                      Event("Scrambled Eggs", "Breakfast",
-                          "List of Ingredients", "List of Instructions"),
+                  if (requestPetition.isEmpty) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Please Enter a Value'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Cerrar la alerta
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
                     );
                   } else {
-                    selectedEvents[selectedDay] = [
-                      Event("Scrambled Eggs", "Breakfast",
-                          "List of Ingredients", "List of Instructions")
-                    ];
+                    getRecipesByCost(
+                        tipeOfPetition, double.parse(requestPetition));
                   }
                 });
               },
@@ -173,19 +336,26 @@ class _CalendarState extends State<Calendar> {
               text: Texts.generateFoodScheduleSevenDays,
               onPressed: () {
                 setState(() {
-                  for (var i = 0; i < 7; i++) {
-                    DateTime currentDay = selectedDay.add(Duration(days: i));
-                    if (selectedEvents[currentDay] != null) {
-                      selectedEvents[currentDay]?.add(
-                        Event("Scrambled Eggs", "Breakfast",
-                            "List of Ingredients", "List of Instructions"),
-                      );
-                    } else {
-                      selectedEvents[currentDay] = [
-                        Event("Scrambled Eggs", "Breakfast",
-                            "List of Ingredients", "List of Instructions")
-                      ];
-                    }
+                  if (requestPetition.isEmpty) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Please Enter a Value'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Cerrar la alerta
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    getRecipesByCostWeek(
+                        tipeOfPetition, double.parse(requestPetition));
                   }
                 });
               },

@@ -38,7 +38,7 @@ class Labels {
   static const password = "Password";
   static const login = "Login";
   static const confirmPassword = "Confirm Password";
-  static const calories = "calories";
+  static const calories = "Calories";
 }
 
 class ErrorTexts {
