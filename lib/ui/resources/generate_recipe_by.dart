@@ -27,10 +27,10 @@ class _GenerateRecipeByState extends State<GenerateRecipeBy> {
           Texts.generateBy,
           textAlign: TextAlign.left,
           style: TextStyle(
-          color: colors.background,
-          fontFamily: constraints.fontFamily,
-          fontSize: 30,
-          fontWeight: FontWeight.w900),
+              color: colors.background,
+              fontFamily: constraints.fontFamily,
+              fontSize: 30,
+              fontWeight: FontWeight.w900),
         ),
         DropdownButton<String>(
           isExpanded: true,
