@@ -32,6 +32,7 @@ class Chefcito extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
         ),
+        showSemanticsDebugger: false,
         locale: const Locale('es'),
         navigatorKey: StackedService.navigatorKey,
         onGenerateRoute: StackedRouter().onGenerateRoute,

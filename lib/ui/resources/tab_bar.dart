@@ -1,10 +1,14 @@
+import 'package:chefcito/app/app.router.dart';
 import 'package:chefcito/core/constants/image_assets.dart';
 import 'package:chefcito/core/constants/strings.dart';
+import 'package:chefcito/services/secure_storage.dart';
 import 'package:chefcito/ui/resources/calendar.dart';
+import 'package:chefcito/ui/views/recipes_category_list/recipes_category_list_view.dart';
 import 'package:chefcito/ui/views/request/request_view.dart';
 import 'package:chefcito/core/constants/colors.dart' as colors;
 import 'package:chefcito/core/constants/constraints.dart' as constraints;
 import 'package:flutter/material.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class TabBarApp extends StatelessWidget {
   const TabBarApp({super.key});
@@ -59,8 +63,21 @@ class TabBarExample extends StatelessWidget {
               ),
             ),
           ]),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
+                await SecureStorageService().deleteValue(key: 'token');
+                NavigationService().clearStackAndShow(Routes.loginPage);
+              },
+            ),
+          ],
           bottom: const TabBar(
             tabs: <Widget>[
+              Tab(
+                text: "Recipes",
+                icon: Icon(Icons.microwave),
+              ),
               Tab(
                 text: "Generate",
                 icon: Icon(Icons.food_bank),
@@ -69,23 +86,19 @@ class TabBarExample extends StatelessWidget {
                 text: "Profile",
                 icon: Icon(Icons.person),
               ),
-              Tab(
-                text: "Guides",
-                icon: Icon(Icons.book),
-              ),
             ],
           ),
         ),
         body: TabBarView(
           children: <Widget>[
-            Center(
+            const Center(
+              child: RecipesCategoryListView(),
+            ),
+            const Center(
               child: RequestPage(),
             ),
             Center(
               child: Calendar(),
-            ),
-            Center(
-              child: Text("To do"),
             ),
           ],
         ),

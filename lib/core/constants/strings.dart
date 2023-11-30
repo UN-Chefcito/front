@@ -18,7 +18,7 @@ class Texts {
   static const chatgptUser1 = "Give a recipe with ";
   static const chatgptUser2 = " no more text";
   static const chatgptUser3 =
-      " in the next JSON formart, all atributtes as a single String, not lists : 'title': RecipeName, 'description': RecipeDescription, 'ingredients': ingredients, 'steps': steps,'keywords': keywords";
+      " in the next JSON formart, all atributtes as a single String, not lists : 'title': RecipeName, 'description': RecipeDescription, 'ingredients': ingredients, 'steps': steps,'keywords': keywords, 'calories': aproxCaloriesValue, 'protein': aproxProteinsValue, 'buks': aproxBuksValue";
   static const foodSchedule = "Your Schedule !";
   static const generateFoodSchedule = "Generate Schedule";
   static const generateFoodScheduleSevenDays = "Generate Schedule For 7 Days";
